@@ -1,0 +1,47 @@
+<div
+	intro='fly:{
+		x: -200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+
+	outro='fly:{
+		x: -200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+>
+	<header>
+		<h1>Ractive.js examples</h1>
+	</header>
+
+	{{#each examples}}
+		<a class='example-preview-outer stealth' href='[[slug]]'>
+			<div class='example-preview-inner'>
+				<div class='example-preview' style='background-image: url(/thumbnails/[[slug]].jpg);'></div>
+			</div>
+
+			<h3>[[title]]</h3>
+		</a>
+	{{/each}}
+
+	<a class='example-preview-outer stealth'>
+		<div class='example-preview-inner'>
+			<div class='example-preview' style='background: #fbfbfb'></div>
+		</div>
+
+		<h3>More soon!</h3>
+	</a>
+</div>
+
+<script>
+	component.exports = {
+		oninit () {
+
+		},
+
+		transitions: {
+			fly: require( 'ractive-transitions-fly' )
+		}
+	};
+</script>

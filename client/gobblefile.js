@@ -31,6 +31,7 @@ var app = gobble([ 'src/app', '../shared' ])
 		entry: 'app',
 		strict: true
 	})
+	.transform( 'derequire' )
 	.transform( 'browserify', {
 		entries: [ './app' ],
 		dest: 'app.js',

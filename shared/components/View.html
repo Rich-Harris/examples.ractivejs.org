@@ -1,0 +1,11 @@
+<link rel='ractive' href='./Layout.html'>
+<link rel='ractive' href='./Root.html'>
+<link rel='ractive' href='./Example.html'>
+
+<Layout>
+	{{#if route === 'root'}}
+		<Root/>
+	{{elseif route === 'example'}}
+		<Example/>
+	{{/if}}
+</Layout>

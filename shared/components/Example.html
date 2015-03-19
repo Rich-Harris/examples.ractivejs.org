@@ -1,0 +1,202 @@
+<div
+	intro='fly:{
+		x: 200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+
+	outro='fly:{
+		x: 200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+>
+	<header>
+		<h1>[[gist.description]]</h1>
+	</header>
+
+	<div class='example-container'>
+		<div id='example'>
+
+		</div>
+	</div>
+
+	<div id='info'>
+		{{#if readme}}
+			{{{readme}}}
+		{{/if}}
+
+		{{#each files}}
+			<h2>{{filename}}</h2>
+			<pre>{{content}}</pre>
+		{{/each}}
+	</div>
+</div>
+
+<style>
+	.tabs {
+
+	}
+</style>
+
+
+<script>
+	/*global Ractive, component, require, window */
+	const m = require( 'marked' );
+	const e = require( 'eval2' );
+	const r = require( 'rcu' );
+
+	const loadDependency = require( '../utils/loadDependency' );
+
+	r.init( Ractive );
+
+	function clean ( code ) {
+		return code.replace( /\t/g, '  ' ).trim();
+	}
+
+	component.exports = {
+		data: () => ({
+			tabs: [ 'readme', 'template', 'javascript', 'css' ],
+			selected: 'readme'
+		}),
+
+		oninit () {
+			let files = this.get( 'gist.files' );
+
+			this.orderedFiles = [];
+			let readme;
+
+			Object.keys( files ).forEach( filename => {
+				let file = files[ filename ];
+
+				if ( /^readme(\.\w+)?/i.test( filename ) ) {
+					// README is a special case
+					readme = m( file.content );
+				} else {
+					let content = clean( file.content );
+
+					this.orderedFiles.push({ filename, content });
+
+					if ( filename === 'main.js' ) {
+						this.javascript = content;
+					}
+				}
+			});
+
+			if ( !this.javascript ) {
+				throw new Error( 'Gist is missing main.js file' );
+			}
+
+			this.orderedFiles.sort( ( a, b ) => {
+				// JavaScript before components
+				if ( /\.js$/.test( a.filename ) && /\.html$/.test( b.filename ) ) {
+					return -1;
+				}
+
+				if ( /\.html$/.test( a.filename ) && /\.js$/.test( b.filename ) ) {
+					return 1;
+				}
+
+				// Everything else alphabetically
+				return a.filename < b.filename ? -1 : 1;
+			});
+
+			if ( readme ) {
+				this.set( 'readme', readme );
+			}
+
+			this.set( 'files', this.orderedFiles );
+		},
+
+		onrender () {
+			makeComponents( this.orderedFiles ).then( components => {
+				let componentList = Object.keys( components );
+				let componentConstructors = componentList.map( n => components[n] );
+
+				// TODO support ES6 syntax in examples?
+				let fn = e.Function([ 'Ractive', 'demo' ].concat( componentList ), this.javascript );
+
+				fn.apply( window, [ Ractive, this.find( '#example' ) ].concat( componentConstructors ) );
+			});
+
+
+
+			this.on( 'unrender', () => {
+				// this is an egregious hack
+				let instances = this.find( '#example' ).__ractive_instances__;
+
+				console.log( 'instances', instances );
+
+				if ( instances ) {
+					instances.forEach( x => x.teardown() );
+				}
+			});
+		},
+
+		transitions: {
+			fly: require( 'ractive-transitions-fly' )
+		},
+
+		events: {
+			tap: require( 'ractive-events-tap' )
+		}
+	};
+
+
+
+	function makeComponents ( files ) {
+		let promiseByName = {};
+		let sources = {};
+		let components = {};
+		let promises = [];
+
+		files.forEach( file => {
+			if ( !/.html$/.test( file.filename ) ) {
+				return;
+			}
+
+			let name = file.filename.slice( 0, -5 );
+
+			sources[ name ] = file.content;
+		});
+
+		Object.keys( sources ).forEach( name => {
+			promises.push( makeComponent( name, sources[ name ] ) );
+		});
+
+		return Ractive.Promise.all( promises ).then( () => components );
+
+		function makeComponent ( name, source ) {
+			let promises = {}, dependencies = {};
+
+			if ( !promiseByName[ name ] ) {
+				promiseByName[ name ] = new Promise( ( fulfil, reject ) => {
+					r.make( source, {
+						url: `${name}.html`,
+						loadImport: ( name, url, base, callback ) => {
+							makeComponent( name, sources[ name ] ).then( callback );
+						},
+						loadModule: ( name, x, url, callback ) => {
+							if ( !promises[ name ] ) {
+								promises[ name ] = loadDependency( name );
+							}
+
+							promises[ name ].then( dependency => {
+								dependencies[ name ] = dependency;
+								callback( dependency );
+							});
+						},
+						'require': name => {
+							return dependencies[ name ];
+						}
+					}, ( component => {
+						components[ name ] = component;
+						fulfil( component );
+					}), reject );
+				});
+			}
+
+			return promiseByName[ name ];
+		}
+	}
+</script>

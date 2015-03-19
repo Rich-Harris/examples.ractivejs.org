@@ -3,7 +3,9 @@ var client = require( './client/gobblefile' );
 
 gobble.cwd( __dirname );
 
-var server = gobble([ 'server', 'shared', 'config.js' ])
+var shared = gobble( 'shared' ).transform( 'ractive', { type: 'es6' });
+
+var server = gobble([ 'server', shared, 'config.js' ])
 	.transform( 'babel', {
 		whitelist: [
 			'es6.arrowFunctions',
@@ -24,5 +26,5 @@ var server = gobble([ 'server', 'shared', 'config.js' ])
 		sourceMap: false
 	});
 
-//module.exports = gobble([ client.moveTo( 'public' ), server ]);
-module.exports = server;
+module.exports = gobble([ client.moveTo( 'public' ), server ]);
+//module.exports = server;

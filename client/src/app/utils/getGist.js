@@ -2,7 +2,7 @@ import Ractive from 'ractive';
 
 const Promise = Ractive.Promise;
 
-let cache = ( typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.gists ) || {};
+let cache = {};//( typeof INITIAL_DATA !== 'undefined' && INITIAL_DATA.gists ) || {};
 let uid = 1;
 
 export default function getGist ( id ) {

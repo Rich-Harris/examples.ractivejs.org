@@ -4,12 +4,14 @@ import Ractive from 'ractive';
 import getGist from './utils/getGist';
 import { examples, slugToGistId, gistIdToSlug } from 'examples';
 
-import Root from './views/Root';
-import GistViewer from './views/GistViewer';
+import Root from 'components/Root';
+import Example from 'components/Example';
 
 const Promise = Ractive.Promise;
 
-let view, exitPromise = Promise.resolve();
+let view;
+let firstRun = true;
+let exitPromise = Promise.resolve();
 
 page( '/', () => {
 	document.title = 'Examples | Ractive.js';
@@ -19,8 +21,11 @@ page( '/', () => {
 			el: 'main',
 			data: {
 				examples
-			}
+			},
+			noIntro: firstRun
 		});
+
+		firstRun = false;
 	});
 });
 
@@ -40,12 +45,13 @@ page( '/:id', route => {
 		getGist( id ).then( gist => {
 			document.title = `${gist.description} | Examples | Ractive.js`;
 
-			console.log( 'gist', gist );
-
-			view = new GistViewer({
+			view = new Example({
 				el: 'main',
-				data: { gist }
+				data: { gist },
+				noIntro: firstRun
 			});
+
+			firstRun = false;
 		})
 
 		.catch( err => {

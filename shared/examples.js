@@ -1,5 +1,11 @@
 const examples = [
 	{
+		slug: 'todos',
+		title: 'Todos',
+		gist_id: 'c96db6acc974403b7c5b'
+	},
+
+	{
 		slug: 'clock',
 		title: 'Clock',
 		gist_id: '2042ca3c964200488999'
@@ -9,6 +15,18 @@ const examples = [
 		slug: 'animated-chart',
 		title: 'Animated chart',
 		gist_id: 'cf74e6465e89ad185954'
+	},
+
+	{
+		slug: 'comments',
+		title: 'Comments',
+		gist_id: '7d7a3245673e0b581caa'
+	},
+
+	{
+		slug: 'ratings',
+		title: 'Ratings',
+		gist_id: '6ffe3f9176fb7b9a23a2'
 	}
 ];
 
