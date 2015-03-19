@@ -24,4 +24,5 @@ var server = gobble([ 'server', 'shared', 'config.js' ])
 		sourceMap: false
 	});
 
-module.exports = gobble([ client.moveTo( 'public' ), server ]);
+//module.exports = gobble([ client.moveTo( 'public' ), server ]);
+module.exports = server;

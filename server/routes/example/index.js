@@ -1,38 +1,46 @@
 import Ractive from 'ractive';
 
-import { IDS } from 'config';
+import { examples, slugToGistId, gistIdToSlug } from 'examples';
 import templates from 'templates';
 import getGist from 'utils/getGist';
 
-let reverseLookup = {};
-Object.keys( IDS ).forEach( alias => {
-	reverseLookup[ IDS[ alias ] ] = alias;
-});
-
-let Example = Ractive.extend({
-	template: templates.example,
+let Page = Ractive.extend({
+	template: templates.main,
 	partials: {
-		nav: templates.nav
+		nav: templates.nav,
+		footer: templates.footer
 	}
 });
 
-export default function example ( req, res ) {
+export default function example ( req, res, next ) {
 	let id = req.params.id;
 
-	if ( id in reverseLookup ) {
-		res.redirect( `/${reverseLookup[id]}` );
+	if ( id in gistIdToSlug ) {
+		res.redirect( `/${gistIdToSlug[id]}` );
 		return;
 	}
 
-	if ( id in IDS ) {
-		id = IDS[ id ];
+	if ( id in slugToGistId ) {
+		id = slugToGistId[ id ];
 	}
 
-	getGist( id ).then( gist => {
-		let example = new Example({
-			data: gist
+	// getGist( id ).then( gist => {
+	// 	let gists = {};
+	// 	gists[ id ] = gist;
+
+		let page = new Page({
+			data: {
+				title: `Examples | Ractive.js`,
+				payloadUrl: `/payload.js?gist_id=${id}`,
+				// payload: {
+				// 	examples,
+				// 	gists
+				// }
+			}
 		});
 
-		res.send( example.toHTML() );
-	});
+		res.send( page.toHTML() );
+	// }).catch( err => {
+	// 	next( err );
+	// });
 }

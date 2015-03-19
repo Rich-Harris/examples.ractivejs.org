@@ -11,7 +11,7 @@ let cache = LRU({
 
 export default function getGist ( id ) {
 	if ( cache.has( id ) ) {
-		return Promise.resolve( id );
+		return Promise.resolve( cache.get( id ) );
 	}
 
 	let promise = request({

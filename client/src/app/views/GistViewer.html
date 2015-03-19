@@ -1,0 +1,107 @@
+<div
+	intro='fly:{
+		x: 200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+
+	outro='fly:{
+		x: 200,
+		easing: "ease-in-out",
+		duration: 100
+	}'
+>
+	<header>
+		<h1>[[gist.description]]</h1>
+	</header>
+
+	<div class='example-container'>
+		<div id='example'>
+
+		</div>
+	</div>
+
+	<div id='info'>
+		<div class='tabs'>
+			{{#each tabs}}
+				<span on-tap='set("selected",this)' class='tab {{selected === this ? "selected" : "" }}'>[[this]]</span>
+			{{/each}}
+		</div>
+
+		<div class='wrapper'>
+			{{#if selected === 'readme'}}
+				<div class='readme'>{{{readme}}}</div>
+			{{elseif selected === 'template'}}
+				<pre>{{template}}</pre>
+			{{elseif selected === 'javascript'}}
+				<pre>{{javascript}}</pre>
+			{{else}}
+				<pre>{{css}}</pre>
+			{{/if}}
+		</div>
+
+	</div>
+</div>
+
+<style>
+	.tabs {
+
+	}
+</style>
+
+
+<script>
+	const m = require( 'marked' );
+	const e = require( 'eval2' );
+
+	function clean ( code ) {
+		return code.replace( /\t/g, '  ' );
+	}
+
+	let instances = [];
+
+	const FakeRactive = function ( options ) {
+		let ractive = new Ractive( options );
+
+		console.log( 'created fake ractive' );
+
+		instances.push( ractive );
+		return ractive;
+	};
+
+	component.exports = {
+		data: () => ({
+			tabs: [ 'readme', 'template', 'javascript', 'css' ],
+			selected: 'readme'
+		}),
+
+		onrender () {
+			let files = this.get( 'gist.files' );
+
+			let readme = m( files[ 'README.md' ].content );
+			let template = clean( files[ 'template.html' ].content );
+			let javascript = clean( files[ 'code.js' ].content );
+			let css = clean( files[ 'styles.css' ].content );
+
+			this.set({ readme, template, javascript, css });
+
+			// TODO support ES6 syntax in examples?
+			let fn = e.Function( 'Ractive', 'template', 'css', 'demo', javascript );
+
+			fn( FakeRactive, template, css, this.find( '#example' ) );
+
+			this.on( 'unrender', () => {
+				instances.forEach( x => x.teardown() );
+				instances = [];
+			});
+		},
+
+		transitions: {
+			fly: require( 'ractive-transitions-fly' )
+		},
+
+		events: {
+			tap: require( 'ractive-events-tap' )
+		}
+	};
+</script>
