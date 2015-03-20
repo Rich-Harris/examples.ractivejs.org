@@ -19,7 +19,8 @@
 
 	<Footer/>
 
-	<script src='{{payloadUrl}}'></script>
+	{{#if payloadUrl}}<script src='{{payloadUrl}}'></script>{{/if}}
+	<script src='/js/highlight.pack.js'></script>
 	<script src='/app.js'></script>
 
 	<script>

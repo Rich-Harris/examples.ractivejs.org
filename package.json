@@ -25,6 +25,7 @@
     "ractive": "^0.7.1",
     "ractive-events-tap": "file:../../../../var/folders/z7/x0dnnbh17z95gbxzxchpd90r0000gp/T/npm-10946-e49d2b77/git-cache-6332b1c1f83c/834110ded256f36f36871601e8f017bd583cd469",
     "ractive-route": "git://github.com/MartinKolarik/ractive-route",
+    "ractive-transitions-fade": "^0.2.0",
     "ractive-transitions-fly": "git://github.com/ractivejs/ractive-transitions-fly#edge",
     "ractive-www": "git://github.com/ractivejs/www-common",
     "rcu": "^0.4.0",

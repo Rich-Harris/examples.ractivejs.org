@@ -54,12 +54,18 @@ app.get( '/:id', ( req, res ) => {
 		id = slugToGistId[ id ];
 	}
 
-	view.set({
-		title: `Examples | Ractive.js`,
-		payloadUrl: `/payload.js?gist_id=${id}`
-	});
+	getGist( id ).then( gist => {
+		view.set({
+			route: 'example',
+			title: `Examples | Ractive.js`,
+			gist: gist,
+			payloadUrl: `/payload.js?gist_id=${id}`
+		});
 
-	res.send( view.toHTML() );
+		res.send( view.toHTML() );
+	}).catch( err => {
+		res.status( err.statusCode ).end();
+	});
 });
 
 app.listen( CONFIG.PORT, () => {

@@ -28,7 +28,7 @@
 
 		{{#each files}}
 			<h2>{{filename}}</h2>
-			<pre>{{content}}</pre>
+			<pre decorator='prettify:{{filename}}'>{{content}}</pre>
 		{{/each}}
 	</div>
 </div>
@@ -139,6 +139,16 @@
 
 		events: {
 			tap: require( 'ractive-events-tap' )
+		},
+
+		decorators: {
+			prettify ( node, filename ) {
+				hljs.highlightBlock( node );
+
+				return {
+					teardown () {}
+				};
+			}
 		}
 	};
 

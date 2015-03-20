@@ -27,6 +27,18 @@ const examples = [
 		slug: 'ratings',
 		title: 'Ratings',
 		gist_id: '6ffe3f9176fb7b9a23a2'
+	},
+
+	{
+		slug: 'illustration',
+		title: 'Illustration',
+		gist_id: '994b69187ad421703b2e'
+	},
+
+	{
+		slug: 'donut-charts',
+		title: 'Donut Charts',
+		gist_id: 'f9dab22ad4dcec14e0be'
 	}
 ];
 
