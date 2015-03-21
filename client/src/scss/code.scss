@@ -72,10 +72,12 @@ pre code {
 .pun { color: $punctuation; }
 .hljs-string { color: $string; }
 .hljs-keyword { color: $keyword; }
-.typ { color: $blue; }
-.tag { color: $tag; }
-.atn { color: $attrName }
-.atv { color: $attrValue }
+.hljs-function { color: $tag; }
+.hljs-class { color: $blue; }
+.hljs-title { color: $tag; }
+.hljs-attribute { color: $attrName }
+.hljs-value { color: $attrValue }
 .hljs-number { color: $literal }
-.com { color: $comment }
+.hljs-literal { color: $literal }
+.hljs-comment { color: $comment }
 

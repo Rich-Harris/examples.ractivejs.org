@@ -23,7 +23,7 @@
     "marked": "^0.3.3",
     "page": "^1.6.1",
     "ractive": "^0.7.1",
-    "ractive-events-tap": "file:../../../../var/folders/z7/x0dnnbh17z95gbxzxchpd90r0000gp/T/npm-10946-e49d2b77/git-cache-6332b1c1f83c/834110ded256f36f36871601e8f017bd583cd469",
+    "ractive-events-tap": "^0.2.0",
     "ractive-route": "git://github.com/MartinKolarik/ractive-route",
     "ractive-transitions-fade": "^0.2.0",
     "ractive-transitions-fly": "git://github.com/ractivejs/ractive-transitions-fly#edge",
@@ -31,8 +31,7 @@
     "rcu": "^0.4.0",
     "request-promise": "^0.4.0",
     "sander": "^0.2.2",
-    "serve-static": "^1.9.2",
-    "systemjs": "^0.15.0"
+    "serve-static": "^1.9.2"
   },
   "scripts": {
     "start": "sh ./scripts/start.sh"
