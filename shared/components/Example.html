@@ -13,12 +13,13 @@
 >
 	<header>
 		<h1>[[gist.description]]</h1>
+
+		<p class='more-examples'><a href='/'>&laquo; more examples</a></p>
+		<p class='fork'>fork this example on <a href='[[gist.html_url]]'>gist.github.com</a></p>
 	</header>
 
 	<div class='example-container'>
-		<div id='example'>
-
-		</div>
+		<span class='loading'>loading from gist.github.com...</span>
 	</div>
 
 	<div id='info'>
@@ -27,17 +28,13 @@
 		{{/if}}
 
 		{{#each files}}
-			<h2>{{filename}}</h2>
-			<pre decorator='prettify:{{filename}}'>{{content}}</pre>
+			<div class='file'>
+				<h2>{{filename}}</h2>
+				<pre decorator='prettify:{{filename}}'>{{content}}</pre>
+			</div>
 		{{/each}}
 	</div>
 </div>
-
-<style>
-	.tabs {
-
-	}
-</style>
 
 
 <script>
@@ -109,6 +106,8 @@
 		},
 
 		onrender () {
+			let container = this.find( '.example-container' );
+
 			makeComponents( this.orderedFiles ).then( components => {
 				let componentList = Object.keys( components );
 				let componentConstructors = componentList.map( n => components[n] );
@@ -116,19 +115,18 @@
 				// TODO support ES6 syntax in examples?
 				let fn = e.Function([ 'Ractive', 'demo' ].concat( componentList ), this.javascript );
 
-				fn.apply( window, [ Ractive, this.find( '#example' ) ].concat( componentConstructors ) );
+				fn.apply( window, [ Ractive, container ].concat( componentConstructors ) );
 			});
-
-
 
 			this.on( 'unrender', () => {
 				// this is an egregious hack
-				let instances = this.find( '#example' ).__ractive_instances__;
+				let instances = container.__ractive_instances__;
 
 				console.log( 'instances', instances );
 
 				if ( instances ) {
 					instances.forEach( x => x.teardown() );
+					container.__ractive_instances__ = [];
 				}
 			});
 		},
