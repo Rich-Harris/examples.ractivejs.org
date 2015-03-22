@@ -1,4 +1,4 @@
-import page from 'page';
+import roadtrip from 'roadtrip';
 import Ractive from 'ractive';
 
 import getGist from './utils/getGist';
@@ -6,73 +6,69 @@ import { examples, slugToGistId, gistIdToSlug } from 'examples';
 
 import Root from 'components/Root';
 import Example from 'components/Example';
+import Nav from 'components/Nav';
 
 const Promise = Ractive.Promise;
 
 let view;
-let firstRun = true;
 let exitPromise = Promise.resolve();
 
-page( '/', () => {
-	document.title = 'Examples | Ractive.js';
+new Nav({ el: '.nav-container' });
 
-	exitPromise.then( () => {
-		view = new Root({
-			el: 'main',
-			data: {
-				examples
-			},
-			noIntro: firstRun
-		});
+let lastRoute;
 
-		firstRun = false;
-	});
-});
+roadtrip
+	.add( '/', {
+		enter ( route ) {
+			document.title = 'Examples | Ractive.js';
 
-page( '/:id', route => {
-	exitPromise.then( () => {
-		let id = route.params.id;
-
-		if ( id in gistIdToSlug ) {
-			page( `/${gistIdToSlug[id]}` );
-			return;
-		}
-
-		if ( id in slugToGistId ) {
-			id = slugToGistId[ id ];
-		}
-
-		getGist( id ).then( gist => {
-			document.title = `${gist.description} | Examples | Ractive.js`;
-
-			view = new Example({
+			route.view = new Root({
 				el: 'main',
-				data: { gist },
-				noIntro: firstRun
+				data: {
+					examples
+				},
+				noIntro: route.isInitial
 			});
+		},
 
-			firstRun = false;
-		})
+		leave ( route ) {
+			return route.view.teardown();
+		}
+	})
 
-		.catch( err => {
-			setTimeout( () => {
-				throw err;
+	.add( '/:id', {
+		beforeenter ( route ) {
+			let id = route.params.id;
+
+			if ( id in gistIdToSlug ) {
+				roadtrip.goto( `/${gistIdToSlug[id]}`, { replaceState: true });
+				return;
+			}
+
+			if ( id in slugToGistId ) {
+				id = slugToGistId[ id ];
+			}
+
+			route.gist = getGist( id )
+		},
+
+		enter ( route ) {
+			return route.gist && route.gist.then( gist => {
+				document.title = `${gist.description} | Examples | Ractive.js`;
+
+				route.view = new Example({
+					el: 'main',
+					data: { gist },
+					noIntro: route.isInitial
+				});
 			});
-		});
-	});
-});
+		},
 
-page.exit( ( route, next ) => {
-	if ( view ) {
-		exitPromise = view.teardown();
-		view = null;
-	} else {
-		exitPromise = Promise.resolve();
-	}
+		leave ( route ) {
+			return route.view.teardown();
+		}
+	})
 
-	next();
-});
-
-page.start();
+	.start();
 
 
