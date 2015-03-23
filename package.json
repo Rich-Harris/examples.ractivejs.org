@@ -21,7 +21,6 @@
     "gobble-cli": "^0.3.5",
     "lru-cache": "^2.5.0",
     "marked": "^0.3.3",
-    "page": "^1.6.1",
     "ractive": "^0.7.1",
     "ractive-events-tap": "^0.2.0",
     "ractive-route": "git://github.com/MartinKolarik/ractive-route",
