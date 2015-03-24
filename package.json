@@ -26,7 +26,7 @@
     "ractive-route": "git://github.com/MartinKolarik/ractive-route",
     "ractive-transitions-fade": "^0.2.0",
     "ractive-transitions-fly": "git://github.com/ractivejs/ractive-transitions-fly#edge",
-    "ractive-www": "^0.2.0",
+    "ractive-www": "^0.3.0",
     "rcu": "^0.4.0",
     "request-promise": "^0.4.0",
     "roadtrip": "^0.1.3",
