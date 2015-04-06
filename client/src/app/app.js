@@ -15,8 +15,6 @@ let exitPromise = Promise.resolve();
 
 new Nav({ el: '.nav-container' });
 
-let lastRoute;
-
 roadtrip
 	.add( '/', {
 		enter ( route ) {
