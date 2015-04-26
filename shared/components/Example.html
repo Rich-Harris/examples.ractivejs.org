@@ -18,22 +18,24 @@
 		<p class='fork'>fork this example on <a href='[[gist.html_url]]'>gist.github.com</a></p>
 	</header>
 
-	<div class='example-container'>
-		<span class='loading'>loading from gist.github.com...</span>
-	</div>
+	<main>
+		<div class='example-container'>
+			<span class='loading'>loading from gist.github.com...</span>
+		</div>
 
-	<div id='info'>
-		{{#if readme}}
-			{{{readme}}}
-		{{/if}}
+		<div id='info'>
+			{{#if readme}}
+				{{{readme}}}
+			{{/if}}
 
-		{{#each files}}
-			<div class='file'>
-				<h2>{{filename}}</h2>
-				<pre decorator='prettify:{{filename}}'>{{content}}</pre>
-			</div>
-		{{/each}}
-	</div>
+			{{#each files}}
+				<div class='file'>
+					<h2>{{filename}}</h2>
+					<pre decorator='prettify:{{filename}}'>{{content}}</pre>
+				</div>
+			{{/each}}
+		</div>
+	</main>
 </div>
 
 

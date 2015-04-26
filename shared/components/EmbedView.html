@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>{{gist.description}}</title>
+
+	<link rel='stylesheet' href='/embed.css'>
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li data-type='result'>Result</li>
+
+				{{#each files}}
+					<li data-type='file' data-file='{{filename}}'>{{filename}}</li>
+				{{/each}}
+			</ul>
+		</nav>
+	</header>
+
+	<main>
+		<div class='demo'></div>
+
+		{{#each files :i}}
+			<div class='file' data-file='{{filename}}'>
+				<!-- <pre><code>{{JSON.stringify(this)}}</code></pre> -->
+
+				<!-- need to dance around because @key has a '.' in it -->
+				{{#if language === 'Markdown'}}
+					<div class='marked'>{{{marked(content)}}}</div>
+				{{else}}
+					<pre><code>{{{highlight(content, language)}}}</code></pre>
+				{{/if}}
+			</div>
+		{{/each}}
+	</main>
+
+	<footer>
+		<p><a target='_blank' href='{{gist.html_url}}'>fork this gist</a> / <a target='_blank' href='/{{gist.id}}'>view on examples.ractivejs.org</a></p>
+	</footer>
+
+	<script src='http://cdn.ractivejs.org/latest/ractive.js'></script>
+	{{{script}}}
+</body>
+</html>
+
+
+
+<script>
+	const marked = require( 'marked' );
+	const h = require( '../utils/highlight' );
+
+	marked.setOptions({
+		gfm: true,
+		highlight: function ( code, lang ) {
+			if ( lang ) {
+				return doubleEscape( h.highlight( lang, code, true ).value );
+			}
+
+			return doubleEscape( h.highlightAuto( code ).value );
+		}
+	});
+
+	function doubleEscape ( code ) {
+		return code
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/&/g, '&amp;');
+	}
+
+	function escape ( code ) {
+		return code
+			.replace(/&/g, '&amp;')
+			.replace(/"/g, '&quot;')
+			.replace(/'/g, '&#39;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;');
+	}
+
+	component.exports = {
+		data: () => ({
+			testObj: {
+
+			},
+
+			marked,
+			highlight: function ( code, lang ) {
+				if ( lang ) {
+					return escape( h.highlight( lang.toLowerCase(), code, true ).value );
+				}
+
+				return escape( h.highlightAuto( code ).value );
+			}
+		})
+	};
+</script>

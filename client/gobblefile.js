@@ -9,6 +9,11 @@ var styles = gobble([
 	'src/scss'
 ]).transform( 'sass', { src: 'main.scss', dest: 'main.css' });
 
+var embedStyles = gobble([
+	common.grab( 'scss' ).moveTo( 'common' ),
+	'src/scss'
+]).transform( 'sass', { src: 'embed.scss', dest: 'embed.css' });
+
 var app = gobble([ 'src/app', '../shared' ])
 	.transform( 'ractive', {
 		type: 'es6'
@@ -43,5 +48,6 @@ module.exports = gobble([
 	'src/root',
 	common,
 	styles,
+	embedStyles,
 	app
 ]);

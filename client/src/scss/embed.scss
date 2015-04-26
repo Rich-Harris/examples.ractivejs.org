@@ -1,0 +1,113 @@
+// styles from ractive-www
+@import "common/typography";
+@import "common/code";
+@import "common/hljs";
+@import "common/colours";
+@import "common/mixins";
+
+
+// IE8...
+header, nav, section, article, aside, footer {
+	display: block;
+}
+
+
+// example.ractivejs.org/embed styles
+@import "code";
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+}
+
+body {
+	position: relative;
+	padding: 2em 0 0 0;
+	border: 1px solid #eee;
+	@include border-box;
+}
+
+header, footer {
+	position: absolute;
+	background-color: #fbfbfb;
+	left: 0;
+	width: 100%;
+	height: 2em;
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	z-index: 2;
+	font-size: 0.8em;
+}
+
+header {
+	top: 0;
+	overflow-x: auto;
+}
+
+footer {
+	bottom: 0;
+}
+
+footer p {
+	padding: 0.5em;
+}
+
+nav {
+	width: 9999px;
+}
+
+nav > ul {
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+
+nav li {
+	display: inline-block;
+	list-style: none;
+	padding: 0.5em;
+	height: 2em;
+	cursor: pointer;
+	color: $green;
+	/* border-bottom: 0 solid $green; */
+	@include border-box;
+}
+
+nav li.active {
+	border-bottom: 3px solid $green;
+}
+
+nav li:hover {
+	background-color: $light-green;
+}
+
+main {
+	position: relative;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow-y: auto;
+	margin: 0;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+.demo {
+	padding: 0.5em;
+}
+
+.file {
+	display: none;
+}
+
+pre {
+	margin: 0;
+	background-color: transparent;
+}
+
+.marked {
+	padding: 0.5em;
+}

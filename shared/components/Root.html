@@ -15,31 +15,33 @@
 		<h1>Ractive.js examples</h1>
 	</header>
 
-	<p>You can create your own examples with a <a href='https://gist.github.com/'>GitHub Gist</a> - just add a <code>main.js</code> file, a series of <a href='https://github.com/ractivejs/component-spec/'>component files</a>, and an optional <code>README.md</code>.</p>
+	<main>
+		<p>You can create your own examples with a <a href='https://gist.github.com/'>GitHub Gist</a> - just add a <code>main.js</code> file, a series of <a href='https://github.com/ractivejs/component-spec/'>component files</a>, and an optional <code>README.md</code>.</p>
 
-	<p>Then, take the gist ID (the last bit of the URL) and append it to <a href='/'>examples.ractivejs.org</a> - so <a href='https://gist.github.com/Rich-Harris/610bdc80be7d39eaa9cf'>this gist</a> becomes <a href='/610bdc80be7d39eaa9cf'>this example</a>.</p>
+		<p>Then, take the gist ID (the last bit of the URL) and append it to <a href='/'>examples.ractivejs.org</a> - so <a href='https://gist.github.com/Rich-Harris/610bdc80be7d39eaa9cf'>this gist</a> becomes <a href='/610bdc80be7d39eaa9cf'>this example</a>.</p>
 
-	<h2>Featured examples</h2>
+		<h2>Featured examples</h2>
 
-	<div class='examples'>
-		{{#each examples}}
-			<a class='example-preview-outer' href='[[slug]]'>
+		<div class='examples'>
+			{{#each examples}}
+				<a class='example-preview-outer' href='[[slug]]'>
+					<div class='example-preview-inner'>
+						<div class='example-preview' style='background-image: url(/thumbnails/[[slug]].jpg);'></div>
+					</div>
+
+					<h3>[[title]]</h3>
+				</a>
+			{{/each}}
+
+			<a class='example-preview-outer'>
 				<div class='example-preview-inner'>
-					<div class='example-preview' style='background-image: url(/thumbnails/[[slug]].jpg);'></div>
+					<div class='example-preview' style='background: #fbfbfb'></div>
 				</div>
 
-				<h3>[[title]]</h3>
+				<h3>More soon!</h3>
 			</a>
-		{{/each}}
-
-		<a class='example-preview-outer'>
-			<div class='example-preview-inner'>
-				<div class='example-preview' style='background: #fbfbfb'></div>
-			</div>
-
-			<h3>More soon!</h3>
-		</a>
-	</div>
+		</div>
+	</main>
 </div>
 
 <script>

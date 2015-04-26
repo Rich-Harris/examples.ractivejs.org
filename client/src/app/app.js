@@ -21,7 +21,7 @@ roadtrip
 			document.title = 'Examples | Ractive.js';
 
 			route.view = new Root({
-				el: 'main',
+				el: '.content',
 				data: {
 					examples
 				},
@@ -55,7 +55,7 @@ roadtrip
 				document.title = `${gist.description} | Examples | Ractive.js`;
 
 				route.view = new Example({
-					el: 'main',
+					el: '.content',
 					data: { gist },
 					noIntro: route.isInitial
 				});
