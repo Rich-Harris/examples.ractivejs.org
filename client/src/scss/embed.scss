@@ -23,9 +23,25 @@ html, body {
 
 body {
 	position: relative;
-	padding: 2em 0 0 0;
+	padding: 1.6em 0 1.6em 0;
 	border: 1px solid #eee;
 	@include border-box;
+}
+
+h1, h2 {
+	font-family: 'Source Sans Pro', arial, sans-serif;
+	font-weight: 500;
+	margin: 0.5em 0 0.5em 0;
+	color: #222;
+	line-height: 1.2;
+}
+
+h1 {
+	font-size: 1.8em;
+}
+
+h2 {
+	font-size: 1.4em;
 }
 
 header, footer {
