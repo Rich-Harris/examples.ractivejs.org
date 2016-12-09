@@ -1,3 +1,5 @@
+@import "common/_mixins";
+
 $light-green: rgb(249,252,246);
 $green: #729d34;
 $blue: rgb(0,0,100);
@@ -80,4 +82,3 @@ pre code {
 .hljs-number { color: $literal }
 .hljs-literal { color: $literal }
 .hljs-comment { color: $comment }
-
